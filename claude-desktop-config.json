@@ -1,0 +1,13 @@
+{
+    "mcpServers": {
+        "senechal-health": {
+            "command": "python",
+            "args": [
+                "/path/to/senechal_mcp_server.py"
+            ],
+            "env": {
+                "SENECHAL_API_KEY": "your_api_key_here"
+            }
+        }
+    }
+}

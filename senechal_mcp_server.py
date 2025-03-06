@@ -94,6 +94,10 @@ class HealthStats:
     timestamp: str
     timezone: str
 
+@dataclass
+class Metrics:
+    metrics: List[Dict[str, Any]]
+
 # Helper functions
 async def make_api_request(endpoint: str, params: Optional[Dict[str, Any]] = None, expect_json: bool = True) -> Any:
     """Make a request to the Senechal API with the API key."""
@@ -119,6 +123,29 @@ async def make_api_request(endpoint: str, params: Optional[Dict[str, Any]] = Non
         raise
 
 # Resources
+@mcp.resource(uri="senechal://health/availablemetrics")
+def get_available_metrics():
+    """Get a list of available health metrics."""
+    async def impl(resource_uri, query_params):
+        stats.resource_requests += 1
+        logger.info(f"Resource Request: health/availablemetrics - Params: {query_params}")
+        
+        try:
+            # Call the actual API
+            data = await make_api_request("health/availablemetrics")
+            return Metrics(metrics=data)
+        except Exception as e:
+            logger.error(f"API error in health/availablemetrics: {str(e)}")
+            # Provide fallback data in case API fails
+            return {
+                "error": f"API request failed: {str(e)}",
+                "message": "Unable to retrieve available health metrics. Please check your API key and connection."
+            }
+    
+    return impl
+
+
+
 @mcp.resource(uri="senechal://health/summary/{period}")
 def get_health_summary(period: str):
     """
@@ -270,6 +297,31 @@ def get_health_stats():
     return impl
 
 # Tools
+@mcp.tool()
+async def fetch_available_metrics() -> Dict[str, Any]:
+    """
+    Fetch a list of available health metrics.
+    
+    Returns:
+        A dictionary containing the available metrics data
+    """
+    stats.tool_calls += 1
+    logger.info("Tool Call: fetch_available_metrics")
+    
+    try:
+        # Call the actual API
+        data = await make_api_request("health/availablemetrics")
+        return data
+    except Exception as e:
+        logger.error(f"API error in fetch_available_metrics: {str(e)}")
+        # Provide fallback data in case API fails
+        return {
+            "error": f"API request failed: {str(e)}",
+            "message": "Unable to retrieve available health metrics. Please check your API key and connection."
+        }
+
+
+
 @mcp.tool()
 async def fetch_health_summary(period: str, metrics: str = "all", span: int = 1, offset: int = 0) -> Dict[str, Any]:
     """

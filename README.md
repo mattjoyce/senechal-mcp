@@ -1,5 +1,7 @@
 # Senechal MCP Server
 
+[![smithery badge](https://smithery.ai/badge/@mattjoyce/senechal-mcp)](https://smithery.ai/server/@mattjoyce/senechal-mcp)
+
 A Model Context Protocol (MCP) server that acts as a companion to the Senechal project, providing health data from the Senechal API to LLM applications.
 
 ## Overview
@@ -11,6 +13,16 @@ This server provides a standardized interface for LLMs to access health data fro
 - **Prompts**: Reusable templates for analyzing health data
 
 ## Installation
+
+### Installing via Smithery
+
+To install Senechal Health for Claude Desktop automatically via [Smithery](https://smithery.ai/server/@mattjoyce/senechal-mcp):
+
+```bash
+npx -y @smithery/cli install @mattjoyce/senechal-mcp --client claude
+```
+
+### Manual Installation
 
 1. Clone this repository
 2. Create a virtual environment:

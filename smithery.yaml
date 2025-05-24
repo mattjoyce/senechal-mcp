@@ -1,0 +1,24 @@
+# Smithery configuration file: https://smithery.ai/docs/build/project-config
+
+startCommand:
+  type: stdio
+  commandFunction:
+    # A JS function that produces the CLI command based on the given config to start the MCP on stdio.
+    |-
+    (config) => ({ command: 'python', args: ['senechal_mcp_server.py'], env: { SENECHAL_API_KEY: config.senechalApiKey, SENECHAL_API_BASE_URL: config.senechalApiBaseUrl } })
+  configSchema:
+    # JSON Schema defining the configuration options for the MCP.
+    type: object
+    required:
+      - senechalApiKey
+      - senechalApiBaseUrl
+    properties:
+      senechalApiKey:
+        type: string
+        description: Senechal API Key
+      senechalApiBaseUrl:
+        type: string
+        description: Senechal API Base URL
+  exampleConfig:
+    senechalApiKey: your_api_key_here
+    senechalApiBaseUrl: https://your-api-host/api/senechal

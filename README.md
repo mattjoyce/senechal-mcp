@@ -215,3 +215,6 @@ The Senechal MCP server communicates with the following Senechal API endpoints:
 - `/health/current` - Get current measurements
 - `/health/trends` - Get health trends
 - `/health/stats` - Get health stats
+
+## Changelog
+See [CHANGELOG.md](CHANGELOG.md).
